@@ -13,8 +13,9 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 FROM deps AS dev
 COPY . .
 EXPOSE 3001
-# Installing on start keeps the node_modules volume in step with the lockfile (fast no-op otherwise).
-CMD ["sh", "-c", "pnpm install --frozen-lockfile --config.confirm-modules-purge=false && pnpm dev -p 3001 -H 0.0.0.0"]
+# Installing on start keeps the node_modules volume in step with the lockfile (fast no-op
+# otherwise). The store sits inside that volume so pnpm never writes into the mounted repo.
+CMD ["sh", "-c", "pnpm install --frozen-lockfile --config.confirm-modules-purge=false --store-dir /app/node_modules/.pnpm-store && pnpm dev -p 3001 -H 0.0.0.0"]
 
 FROM deps AS build
 COPY . .
