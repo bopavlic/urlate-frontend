@@ -24,6 +24,13 @@
   }
 }
 
+/* The night pitch behind the scoreboard: the same in both themes. */
+:root {
+  --pitch: #08140f;
+  --pitch-line: rgb(238 243 239 / 0.09);
+  --chalk: #eef3ef;
+}
+
 @theme inline {
   --color-paper: var(--paper);
   --color-surface: var(--surface);
@@ -33,11 +40,42 @@
   --color-accent: var(--accent);
   --color-on-accent: var(--on-accent);
   --color-danger: var(--danger);
-  --font-sans: var(--font-geist-sans);
+  --color-pitch: var(--pitch);
+  --color-pitch-line: var(--pitch-line);
+  --color-chalk: var(--chalk);
+  --font-sans: var(--font-figtree);
   --font-display: var(--font-big-shoulders);
 }
 
 body {
   background: var(--paper);
   color: var(--ink);
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* The yellow card being pulled out and held up (YellowCard `show`). Works with the card's
+   own `rotate`, which Tailwind sets as a separate property. */
+@keyframes card-out {
+  from {
+    transform: translateY(48px) rotate(-16deg) scale(0.92);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
 }

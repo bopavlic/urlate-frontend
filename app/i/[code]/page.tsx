@@ -4,6 +4,7 @@ import { formatInviteCode, initials } from "@/src/invite/code";
 import { inviteCopy, inviteTitle, type InvitePreview } from "@/src/invite/copy";
 import { loadInvite } from "@/src/invite/load";
 import type { InviteProblem } from "@/src/invite/problem";
+import { StoreLinks } from "@/src/site/StoreLinks";
 
 // Invite landing: who invited you, the score, and how to get into the app. Rendered per
 // request (the invite can be used or expire at any moment) and kept out of search.
@@ -104,41 +105,9 @@ function Invite({ preview }: { preview: InvitePreview }) {
         >
           Open in Ur Late
         </a>
-        <StoreButtons />
+        <StoreLinks />
       </section>
     </>
-  );
-}
-
-function StoreButtons() {
-  // Read at request time, so the Docker image doesn't need rebuilding when the stores go live.
-  const appStore = process.env.APP_STORE_URL;
-  const playStore = process.env.PLAY_STORE_URL;
-  if (!appStore && !playStore) {
-    return (
-      <p className="text-center text-muted">
-        Coming soon to the App Store and Google Play.
-      </p>
-    );
-  }
-  const links = [
-    { href: appStore, label: "Download on the App Store" },
-    { href: playStore, label: "Get it on Google Play" },
-  ].filter((link): link is { href: string; label: string } =>
-    Boolean(link.href),
-  );
-  return (
-    <div className="grid gap-3 sm:grid-cols-2">
-      {links.map((link) => (
-        <a
-          key={link.label}
-          href={link.href}
-          className="flex h-12 items-center justify-center rounded-full border-2 border-ink px-4 text-center font-semibold"
-        >
-          {link.label}
-        </a>
-      ))}
-    </div>
   );
 }
 
@@ -184,7 +153,7 @@ function Problem({ problem }: { problem: InviteProblem }) {
         {headline}
       </h1>
       <p className="text-lg text-muted">{detail}</p>
-      <StoreButtons />
+      <StoreLinks />
     </section>
   );
 }

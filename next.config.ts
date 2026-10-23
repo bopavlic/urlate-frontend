@@ -1,3 +1,4 @@
+import createMDX from "@next/mdx";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -15,4 +16,7 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+// Blog posts and legal pages are MDX files imported by their pages (content/).
+const withMDX = createMDX({});
+
+export default withMDX(nextConfig);

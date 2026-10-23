@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
-import { Big_Shoulders, Geist } from "next/font/google";
+import { Big_Shoulders, Figtree } from "next/font/google";
+import { siteUrl } from "@/src/site/url";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Friendly, slightly rounded text face: warm next to the condensed scoreboard type.
+const figtree = Figtree({
+  variable: "--font-figtree",
   subsets: ["latin"],
 });
 
@@ -16,23 +18,23 @@ const bigShoulders = Big_Shoulders({
   adjustFontFallback: false,
 });
 
-const siteUrl =
-  process.env.SITE_URL ??
-  (process.env.NODE_ENV === "development"
-    ? "http://localhost:3001"
-    : "https://urlate.app");
+const appStoreId = process.env.APP_STORE_ID;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: { default: "Ur Late", template: "%s" },
-  description: "Who’s been waiting on who? Ur Late keeps score, in minutes.",
+  title: { default: "Ur Late: who’s been waiting on who?", template: "%s · Ur Late" },
+  description:
+    "Ur Late keeps a running score, in minutes, of who kept whom waiting. For friends, siblings, couples and carpools.",
+  openGraph: { siteName: "Ur Late", type: "website" },
+  // iOS Smart App Banner, once the app is on the App Store (read at build time).
+  ...(appStoreId ? { itunes: { appId: appStoreId } } : {}),
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${bigShoulders.variable} h-full antialiased`}
+      className={`${figtree.variable} ${bigShoulders.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans">{children}</body>
     </html>

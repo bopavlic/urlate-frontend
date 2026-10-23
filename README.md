@@ -20,25 +20,34 @@ Or on the host, with the API running on port 4000: `pnpm install && pnpm dev -p 
 | `pnpm test` | Unit tests (Vitest) for the helpers in `src/` |
 | `pnpm lint`, `pnpm exec tsc --noEmit` | Lint and typecheck |
 | `pnpm build` | Production build (`output: "standalone"`, used by the Docker image) |
+| Add a blog post | Add its entry to `src/blog/posts.ts` and write `content/blog/<slug>.mdx` |
 | `pnpm api:generate` | Regenerate the typed API functions in `src/api/generated` from `../urlate-backend/openapi.json` (Orval) after the backend's routes change |
 
 ## Pages
 
 | Route | What |
 | --- | --- |
+| `/` | Landing: hero, the worked example on the night pitch, features, share-card examples. Organization + SoftwareApplication JSON-LD |
+| `/how-it-works` | The score explained with the brief's worked example and the rules |
+| `/faq` | Questions from `src/content/faq.ts`, with FAQPage JSON-LD |
+| `/blog`, `/blog/[slug]` | Posts listed in `src/blog/posts.ts`, bodies in `content/blog/<slug>.mdx`, each with an OG image |
+| `/privacy`, `/terms` | `content/legal/*.mdx`. Drafts: the operator's name, address and governing law are placeholders to fill before launch |
+| `/delete-account` | Deletion by emailed code (Google Play requirement): server action → `POST /v1/public/deletion-requests` and `/confirm` |
+| `/sitemap.xml`, `/robots.txt` | Marketing pages and posts; `/i/` and `/s/` are disallowed |
 | `/i/[code]` | Invite landing: who invited you, the score from your side, the code to enter after installing, "Open in Ur Late" and store buttons. Rendered per request, `noindex`, with an OG image (`opengraph-image.tsx`) |
 | `/.well-known/apple-app-site-association` | iOS universal links for `/i/*` and `/s/*` (404 until `APPLE_TEAM_ID` is set) |
 | `/.well-known/assetlinks.json` | Android App Links for `app.urlate` (404 until `ANDROID_SHA256_CERT_FINGERPRINTS` is set) |
 
 ## Environment
 
-All are read on the server at request time, so one Docker image works everywhere.
+All are read on the server at request time (except where noted), so one Docker image works everywhere.
 
 | Variable | What |
 | --- | --- |
 | `API_URL` | The API's origin, without `/v1` (default `http://localhost:4000`; `http://api:4000` in compose) |
 | `SITE_URL` | This site's origin for absolute OG image URLs (default `https://urlate.app`, `http://localhost:3001` in dev). Read at build time |
 | `APP_STORE_URL`, `PLAY_STORE_URL` | Store listing links; until set, pages say "Coming soon" |
+| `APP_STORE_ID` | The App Store app id, for the iOS Smart App Banner. Read at build time |
 | `APPLE_TEAM_ID` | Apple Developer team id, for apple-app-site-association |
 | `ANDROID_SHA256_CERT_FINGERPRINTS` | Comma-separated SHA-256 fingerprints of the app's signing certificates (debug, upload, Play signing) |
 

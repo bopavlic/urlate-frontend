@@ -44,6 +44,17 @@ export const updateMe = (
       options);
     }
   /**
+ * @summary Delete my account and the data only I can see; shared ledgers keep their history
+ */
+export const deleteMe = (
+
+ options?: SecondParameter<typeof customInstance<void>>,) => {
+      return customInstance<void>(
+      {url: `/me`, method: 'DELETE'
+    },
+      options);
+    }
+  /**
  * @summary Get a short-lived URL to PUT a new avatar to, then save its key with PATCH /me
  */
 export const createAvatarUpload = (
@@ -58,4 +69,5 @@ export const createAvatarUpload = (
     }
   export type GetMeResult = NonNullable<Awaited<ReturnType<typeof getMe>>>
 export type UpdateMeResult = NonNullable<Awaited<ReturnType<typeof updateMe>>>
+export type DeleteMeResult = NonNullable<Awaited<ReturnType<typeof deleteMe>>>
 export type CreateAvatarUploadResult = NonNullable<Awaited<ReturnType<typeof createAvatarUpload>>>
