@@ -5,7 +5,7 @@
  * Who has kept whom waiting, in minutes.
  * OpenAPI spec version: 1.0.0
  */
-import type { InvitePreviewBalance } from './invitePreviewBalance';
+import type { BalanceView } from './balanceView';
 import type { InvitePreviewLedgerKind } from './invitePreviewLedgerKind';
 
 export interface InvitePreview {
@@ -18,6 +18,6 @@ export interface InvitePreview {
   inviterAvatarUrl: string | null;
   /** @nullable */
   placeholderName: string | null;
-  balance: InvitePreviewBalance;
+  balance: BalanceView | null;
   expiresAt: string;
 }

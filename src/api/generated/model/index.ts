@@ -27,7 +27,6 @@ export * from './historyItem';
 export * from './historyPage';
 export * from './invite';
 export * from './invitePreview';
-export * from './invitePreviewBalance';
 export * from './invitePreviewLedgerKind';
 export * from './leaderboardRow';
 export * from './ledgerDetail';

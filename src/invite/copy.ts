@@ -1,15 +1,6 @@
-import type {
-  BalanceView,
-  InvitePreview as GeneratedInvitePreview,
-} from "../api/generated/model";
+import type { InvitePreview } from "../api/generated/model";
 
-/**
- * The API's InvitePreview with `balance` nullable as the spec says (Orval renders the
- * nullable $ref as `BalanceView & (… | null)`, which never allows null).
- */
-export type InvitePreview = Omit<GeneratedInvitePreview, "balance"> & {
-  balance: BalanceView | null;
-};
+export type { InvitePreview };
 
 // Friendly tease, always on the side of the person who waited (brief: "Brand and tone").
 
