@@ -9,7 +9,7 @@ export const faqs: readonly { question: string; answer: string }[] = [
   {
     question: "Is it free?",
     answer:
-      "Yes. Keeping score with anyone, logging, balances and history are free, for good. A Premium upgrade with extras such as more groups and more share-card styles is planned, and there are never ads you didn’t ask for.",
+      "Yes. Keeping score with anyone, logging, balances and history are free, for good. Premium, a monthly or yearly subscription, adds unlimited groups, every share-card look and full stats. You can also unlock one of those for a day by choosing to watch an ad; there are never ads you didn’t ask for.",
   },
   {
     question: "Does the other person need the app?",
