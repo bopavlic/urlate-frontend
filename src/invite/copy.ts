@@ -36,6 +36,13 @@ export function inviteCopy(preview: InvitePreview): {
 } {
   const { inviterName, ledgerKind, ledgerName, placeholderName, balance } =
     preview;
+  if (preview.kind === "PERSON") {
+    return {
+      headline: `${inviterName} wants to keep score with you.`,
+      detail:
+        "Start a tally: every minute either of you keeps the other waiting.",
+    };
+  }
   if (ledgerKind === "GROUP") {
     return {
       headline: `${inviterName} invited you to ${ledgerName ?? "their group"}.`,

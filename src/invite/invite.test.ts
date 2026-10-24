@@ -6,6 +6,7 @@ import { inviteProblem } from "./problem";
 
 const pair: InvitePreview = {
   code: "AB12CD34",
+  kind: "LEDGER",
   ledgerKind: "PAIR",
   ledgerName: null,
   inviterName: "Borna",
@@ -86,6 +87,21 @@ describe("inviteCopy", () => {
     ).toEqual({
       headline: "Borna invited you to Football.",
       detail: "Join the group and find out who’s always late.",
+    });
+  });
+
+  it("offers to start a tally from someone's profile code", () => {
+    expect(
+      inviteCopy({
+        ...pair,
+        kind: "PERSON",
+        placeholderName: null,
+        balance: null,
+        expiresAt: null,
+      }),
+    ).toEqual({
+      headline: "Borna wants to keep score with you.",
+      detail: "Start a tally: every minute either of you keeps the other waiting.",
     });
   });
 

@@ -20,7 +20,7 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
   /**
- * @summary Invite someone to a ledger (reuses a live invite for the same person)
+ * @summary Invite someone to a ledger (reuses a live invite for the same person), optionally sending it to a username
  */
 export const createInvite = (
     id: string,
@@ -45,7 +45,7 @@ export const getInvitePreview = (
       options);
     }
   /**
- * @summary Join a ledger with an invite, taking over the placeholder it was made for
+ * @summary Join a ledger with an invite, taking over the placeholder it was made for; a profile code starts a pair
  */
 export const claimInvite = (
     code: string,

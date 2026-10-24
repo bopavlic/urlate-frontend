@@ -8,6 +8,7 @@
 import type {
   AvatarUpload,
   CreateAvatarUploadBody,
+  DataExport,
   Me,
   UpdateMeBody
 } from '../../model';
@@ -67,7 +68,19 @@ export const createAvatarUpload = (
     },
       options);
     }
+  /**
+ * @summary Download everything Ur Late keeps about me, as a JSON file
+ */
+export const exportMyData = (
+
+ options?: SecondParameter<typeof customInstance<DataExport>>,) => {
+      return customInstance<DataExport>(
+      {url: `/me/export`, method: 'GET'
+    },
+      options);
+    }
   export type GetMeResult = NonNullable<Awaited<ReturnType<typeof getMe>>>
 export type UpdateMeResult = NonNullable<Awaited<ReturnType<typeof updateMe>>>
 export type DeleteMeResult = NonNullable<Awaited<ReturnType<typeof deleteMe>>>
 export type CreateAvatarUploadResult = NonNullable<Awaited<ReturnType<typeof createAvatarUpload>>>
+export type ExportMyDataResult = NonNullable<Awaited<ReturnType<typeof exportMyData>>>
