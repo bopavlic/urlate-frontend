@@ -6,6 +6,7 @@
  * OpenAPI spec version: 1.0.0
  */
 import type {
+  AddMemberBody,
   CreateLedgerBody,
   GetLedgerHistoryParams,
   HistoryPage,
@@ -59,7 +60,7 @@ export const getLedger = (
       options);
     }
   /**
- * @summary Rename a ledger
+ * @summary Rename a ledger, or switch confirm mode (any member can; the others are told)
  */
 export const updateLedger = (
     id: string,
@@ -85,8 +86,36 @@ export const getLedgerHistory = (
     },
       options);
     }
+  /**
+ * @summary Add someone who is not on the app yet to a group (any member can)
+ */
+export const addMember = (
+    id: string,
+    addMemberBody?: BodyType<AddMemberBody>,
+ options?: SecondParameter<typeof customInstance<LedgerDetail>>,) => {
+      return customInstance<LedgerDetail>(
+      {url: `/ledgers/${id}/members`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: addMemberBody
+    },
+      options);
+    }
+  /**
+ * @summary Remove a placeholder added by mistake (only before they appear in any entry or settlement)
+ */
+export const removeMember = (
+    id: string,
+    memberId: string,
+ options?: SecondParameter<typeof customInstance<void>>,) => {
+      return customInstance<void>(
+      {url: `/ledgers/${id}/members/${memberId}`, method: 'DELETE'
+    },
+      options);
+    }
   export type CreateLedgerResult = NonNullable<Awaited<ReturnType<typeof createLedger>>>
 export type ListLedgersResult = NonNullable<Awaited<ReturnType<typeof listLedgers>>>
 export type GetLedgerResult = NonNullable<Awaited<ReturnType<typeof getLedger>>>
 export type UpdateLedgerResult = NonNullable<Awaited<ReturnType<typeof updateLedger>>>
 export type GetLedgerHistoryResult = NonNullable<Awaited<ReturnType<typeof getLedgerHistory>>>
+export type AddMemberResult = NonNullable<Awaited<ReturnType<typeof addMember>>>
+export type RemoveMemberResult = NonNullable<Awaited<ReturnType<typeof removeMember>>>

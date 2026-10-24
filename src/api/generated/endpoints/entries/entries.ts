@@ -34,7 +34,18 @@ export const createEntry = (
       options);
     }
   /**
- * @summary Edit my entry (the previous values are kept as a revision)
+ * @summary One entry, with what I can do with it
+ */
+export const getEntry = (
+    id: string,
+ options?: SecondParameter<typeof customInstance<Entry>>,) => {
+      return customInstance<Entry>(
+      {url: `/entries/${id}`, method: 'GET'
+    },
+      options);
+    }
+  /**
+ * @summary Edit my entry (the previous values are kept as a revision). In confirm mode, or after a dispute or rejection, it waits for the late person again
  */
 export const updateEntry = (
     id: string,
@@ -69,7 +80,44 @@ export const listEntryRevisions = (
     },
       options);
     }
+  /**
+ * @summary Accept an entry against me: a pending one starts counting, a disputed one counts again
+ */
+export const confirmEntry = (
+    id: string,
+ options?: SecondParameter<typeof customInstance<Entry>>,) => {
+      return customInstance<Entry>(
+      {url: `/entries/${id}/confirm`, method: 'POST'
+    },
+      options);
+    }
+  /**
+ * @summary Reject a pending entry against me (confirm mode); it never counts
+ */
+export const rejectEntry = (
+    id: string,
+ options?: SecondParameter<typeof customInstance<Entry>>,) => {
+      return customInstance<Entry>(
+      {url: `/entries/${id}/reject`, method: 'POST'
+    },
+      options);
+    }
+  /**
+ * @summary Dispute an entry against me within 48 hours; it stops counting until I accept it or it is changed
+ */
+export const disputeEntry = (
+    id: string,
+ options?: SecondParameter<typeof customInstance<Entry>>,) => {
+      return customInstance<Entry>(
+      {url: `/entries/${id}/dispute`, method: 'POST'
+    },
+      options);
+    }
   export type CreateEntryResult = NonNullable<Awaited<ReturnType<typeof createEntry>>>
+export type GetEntryResult = NonNullable<Awaited<ReturnType<typeof getEntry>>>
 export type UpdateEntryResult = NonNullable<Awaited<ReturnType<typeof updateEntry>>>
 export type DeleteEntryResult = NonNullable<Awaited<ReturnType<typeof deleteEntry>>>
 export type ListEntryRevisionsResult = NonNullable<Awaited<ReturnType<typeof listEntryRevisions>>>
+export type ConfirmEntryResult = NonNullable<Awaited<ReturnType<typeof confirmEntry>>>
+export type RejectEntryResult = NonNullable<Awaited<ReturnType<typeof rejectEntry>>>
+export type DisputeEntryResult = NonNullable<Awaited<ReturnType<typeof disputeEntry>>>

@@ -2,7 +2,8 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
 
-// The link preview for marketing pages and blog posts: wordmark, a headline, a yellow card.
+// The link preview for marketing pages, blog posts and share cards: wordmark, a headline,
+// a yellow card.
 
 export const ogSize = { width: 1200, height: 630 };
 
@@ -19,7 +20,8 @@ export async function ogCard({
   minutes = 18,
 }: {
   title: string;
-  minutes?: number;
+  /** null: no card, e.g. when everyone is square. */
+  minutes?: number | null;
 }) {
   return new ImageResponse(
     <div
@@ -69,6 +71,7 @@ export async function ogCard({
         >
           {title}
         </div>
+        {minutes !== null && (
         <div
           style={{
             display: "flex",
@@ -90,6 +93,7 @@ export async function ogCard({
             min
           </div>
         </div>
+        )}
       </div>
     </div>,
     {
