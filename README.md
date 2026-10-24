@@ -18,10 +18,12 @@ Or on the host, with the API running on port 4000: `pnpm install && pnpm dev -p 
 | --- | --- |
 | `pnpm dev -p 3001` | Dev server (3000 is taken on the owner's machine) |
 | `pnpm test` | Unit tests (Vitest) for the helpers in `src/` |
-| `pnpm lint`, `pnpm exec tsc --noEmit` | Lint and typecheck |
+| `pnpm lint`, `pnpm typecheck` | Lint and typecheck (`typecheck` runs `next typegen` first, so new routes are typed) |
 | `pnpm build` | Production build (`output: "standalone"`, used by the Docker image) |
 | Add a blog post | Add its entry to `src/blog/posts.ts` and write `content/blog/<slug>.mdx` |
 | `pnpm api:generate` | Regenerate the typed API functions in `src/api/generated` from `../urlate-backend/openapi.json` (Orval) after the backend's routes change |
+
+CI (`.github/workflows/ci.yml`) runs typecheck, lint, tests and a production build on every push to `main` and every pull request. The build needs no API: invite and share pages render per request.
 
 ## Pages
 
