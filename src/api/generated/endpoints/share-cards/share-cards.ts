@@ -6,10 +6,12 @@
  * OpenAPI spec version: 1.0.0
  */
 import type {
+  CreateShareCardBody,
   ShareCard
 } from '../../model';
 
 import { customInstance } from '../../../client';
+import type { BodyType } from '../../../client';
 
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
@@ -20,9 +22,12 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
  */
 export const createShareCard = (
     id: string,
+    createShareCardBody?: BodyType<CreateShareCardBody>,
  options?: SecondParameter<typeof customInstance<ShareCard>>,) => {
       return customInstance<ShareCard>(
-      {url: `/ledgers/${id}/share-cards`, method: 'POST'
+      {url: `/ledgers/${id}/share-cards`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: createShareCardBody
     },
       options);
     }

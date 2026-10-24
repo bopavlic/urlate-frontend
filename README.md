@@ -37,6 +37,7 @@ Or on the host, with the API running on port 4000: `pnpm install && pnpm dev -p 
 | `/i/[code]` | Invite landing: who invited you, the score from your side, the code to enter after installing, "Open in Ur Late" and store buttons. Rendered per request, `noindex`, with an OG image (`opengraph-image.tsx`) |
 | `/.well-known/apple-app-site-association` | iOS universal links for `/i/*` and `/s/*` (404 until `APPLE_TEAM_ID` is set) |
 | `/.well-known/assetlinks.json` | Android App Links for `app.urlate` (404 until `ANDROID_SHA256_CERT_FINGERPRINTS` is set) |
+| `/app-ads.txt` | Names Ur Late's AdMob account, which AdMob needs before it serves rewarded ads (404 until `ADMOB_PUBLISHER_ID` is set) |
 
 ## Environment
 
@@ -49,6 +50,7 @@ All are read on the server at request time (except where noted), so one Docker i
 | `APP_STORE_URL`, `PLAY_STORE_URL` | Store listing links; until set, pages say "Coming soon" |
 | `APP_STORE_ID` | The App Store app id, for the iOS Smart App Banner. Read at build time |
 | `APPLE_TEAM_ID` | Apple Developer team id, for apple-app-site-association |
+| `ADMOB_PUBLISHER_ID` | The AdMob publisher id (`pub-` and 16 digits) for `/app-ads.txt` |
 | `ANDROID_SHA256_CERT_FINGERPRINTS` | Comma-separated SHA-256 fingerprints of the app's signing certificates (debug, upload, Play signing) |
 
 The API rate-limits invite lookups per visitor IP. The site forwards the visitor's address (the rightmost `X-Forwarded-For` entry, set by Caddy) to the API, so in production Caddy must sit in front of the site.

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Suspense } from "react";
+import { Suspense, type CSSProperties, type ReactNode } from "react";
 import {
   cardScore,
   shareDescription,
@@ -8,6 +8,7 @@ import {
   type ShareCard,
 } from "@/src/share/copy";
 import { loadShareCard } from "@/src/share/load";
+import { lookVars } from "@/src/share/look";
 import type { ShareProblem } from "@/src/share/problem";
 import { PitchMarkings } from "@/src/site/PitchMarkings";
 import { StoreLinks } from "@/src/site/StoreLinks";
@@ -39,23 +40,15 @@ export async function generateMetadata(
 export default function SharePage(props: PageProps<"/s/[id]">) {
   return (
     <main className="flex flex-1 flex-col">
-      <section className="relative overflow-hidden bg-pitch text-chalk">
-        <PitchMarkings />
-        <div className="relative mx-auto flex w-full max-w-md flex-col gap-10 px-4 pb-14 pt-8">
-          <Link href="/" className="flex w-fit items-center gap-2">
-            <span
-              aria-hidden
-              className="h-7 w-5 rotate-6 rounded-[3px] bg-accent shadow-sm"
-            />
-            <span className="font-display text-2xl font-black uppercase tracking-wide">
-              Ur Late
-            </span>
-          </Link>
-          <Suspense fallback={<CardSkeleton />}>
-            <CardContent params={props.params} />
-          </Suspense>
-        </div>
-      </section>
+      <Suspense
+        fallback={
+          <Hero>
+            <CardSkeleton />
+          </Hero>
+        }
+      >
+        <CardContent params={props.params} />
+      </Suspense>
 
       <section className="mx-auto flex w-full max-w-md flex-col gap-4 px-4 py-10">
         <h2 className="font-display text-4xl font-black uppercase leading-none">
@@ -83,8 +76,48 @@ async function CardContent({
 }) {
   const { id } = await params;
   const result = await loadShareCard(id);
-  if ("problem" in result) return <Problem problem={result.problem} />;
-  return <Card card={result.card} />;
+  if ("problem" in result) {
+    return (
+      <Hero>
+        <Problem problem={result.problem} />
+      </Hero>
+    );
+  }
+  return (
+    <Hero style={lookVars(result.card)}>
+      <Card card={result.card} />
+    </Hero>
+  );
+}
+
+/** The card's own background (the night pitch unless the sharer picked another look). */
+function Hero({
+  style,
+  children,
+}: {
+  style?: CSSProperties;
+  children: ReactNode;
+}) {
+  return (
+    <section
+      style={style}
+      className="relative overflow-hidden bg-pitch text-chalk"
+    >
+      <PitchMarkings />
+      <div className="relative mx-auto flex w-full max-w-md flex-col gap-10 px-4 pb-14 pt-8">
+        <Link href="/" className="flex w-fit items-center gap-2">
+          <span
+            aria-hidden
+            className="h-7 w-5 rotate-6 rounded-[3px] bg-accent shadow-sm"
+          />
+          <span className="font-display text-2xl font-black uppercase tracking-wide">
+            Ur Late
+          </span>
+        </Link>
+        {children}
+      </div>
+    </section>
+  );
 }
 
 function Card({ card }: { card: ShareCard }) {

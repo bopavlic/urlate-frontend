@@ -1,4 +1,5 @@
 import { cardScore } from "@/src/share/copy";
+import { cardLook } from "@/src/share/look";
 import { loadShareCard } from "@/src/share/load";
 import { ogCard, ogSize } from "@/src/site/og";
 
@@ -15,5 +16,6 @@ export default async function Image(props: { params: Promise<{ id: string }> }) 
   return ogCard({
     title: result.card.headline,
     minutes: cardScore(result.card)?.minutes ?? null,
+    look: cardLook(result.card),
   });
 }

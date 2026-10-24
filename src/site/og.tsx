@@ -18,8 +18,11 @@ const display = readFile(
 export async function ogCard({
   title,
   minutes = 18,
+  look = { background: PITCH, text: "#EEF3EF", card: ACCENT, onCard: INK },
 }: {
   title: string;
+  /** A share card's colours; the classic night pitch by default. */
+  look?: { background: string; text: string; card: string; onCard: string };
   /** null: no card, e.g. when everyone is square. */
   minutes?: number | null;
 }) {
@@ -32,8 +35,8 @@ export async function ogCard({
         flexDirection: "column",
         justifyContent: "space-between",
         padding: 72,
-        background: PITCH,
-        color: "#EEF3EF",
+        background: look.background,
+        color: look.text,
         fontFamily: "Big Shoulders",
       }}
     >
@@ -44,7 +47,7 @@ export async function ogCard({
             width: 44,
             height: 60,
             borderRadius: 6,
-            background: ACCENT,
+            background: look.card,
             transform: "rotate(6deg)",
           }}
         />
@@ -79,8 +82,8 @@ export async function ogCard({
             gap: 12,
             padding: "24px 40px",
             borderRadius: 20,
-            background: ACCENT,
-            color: INK,
+            background: look.card,
+            color: look.onCard,
             transform: "rotate(-3deg)",
           }}
         >
