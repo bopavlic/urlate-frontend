@@ -97,7 +97,7 @@ export default function Home() {
             <span className="block text-balance font-display text-2xl">
               Your brother owes you {totals.owed} min
             </span>
-            <span className="text-muted">Pay up in minutes, not money.</span>
+            <span className="text-muted">Not that you’re counting.</span>
           </p>
         </div>
       </section>

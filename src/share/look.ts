@@ -42,6 +42,5 @@ export function lookVars(card: Pick<ShareCard, "style" | "cardColor">): CSSPrope
     "--ticket-line": "#DDE0E8",
     "--ticket-band": look.card,
     "--ticket-on-band": look.onCard,
-    "--ticket-page": look.background,
   } as CSSProperties;
 }

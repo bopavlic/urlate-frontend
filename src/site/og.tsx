@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
-import { ticketNumber } from "./Ticket";
+import { BARS, ticketNumber } from "./Ticket";
 
 // The link preview for marketing pages, blog posts, invites and share cards: the wordmark,
 // a headline and the late ticket.
@@ -61,7 +61,7 @@ export function OgWordmark({ look }: { look: OgLook }) {
   );
 }
 
-const BARS = [3, 1, 4, 1, 2, 3, 1, 2, 1, 5, 2, 1, 3, 1, 2, 2, 4, 1, 2, 3, 1, 3, 1, 2, 4, 1, 2];
+
 
 /** The late ticket, as in the app. */
 export function OgTicket({
@@ -115,44 +115,18 @@ export function OgTicket({
       <div style={{ display: "flex", flexDirection: "column", padding: "20px 28px 26px", gap: 6 }}>
         {field("OFFENDER", offender)}
         {field("KEPT WAITING", waiter)}
-        <div style={{ display: "flex", position: "relative", margin: "14px 0 6px" }}>
-          <div style={{ display: "flex", width: "100%", borderTop: "3px dashed #DDE0E8" }} />
-          <div
-            style={{
-              display: "flex",
-              position: "absolute",
-              left: -44,
-              top: -17,
-              width: 32,
-              height: 32,
-              borderRadius: 16,
-              background: look.background,
-            }}
-          />
-          <div
-            style={{
-              display: "flex",
-              position: "absolute",
-              right: -44,
-              top: -17,
-              width: 32,
-              height: 32,
-              borderRadius: 16,
-              background: look.background,
-            }}
-          />
-        </div>
+        <div style={{ display: "flex", width: "100%", margin: "14px 0 6px", borderTop: "3px dashed #DDE0E8" }} />
         <div style={{ display: "flex", alignItems: "baseline", gap: 12 }}>
           <div style={{ display: "flex", fontSize: 130, lineHeight: 1, letterSpacing: -5 }}>
             {minutes}
           </div>
           <div style={{ display: "flex", fontSize: 34 }}>MIN</div>
         </div>
-        <div style={{ display: "flex", gap: 3, height: 40, marginTop: 10 }}>
+        <div style={{ display: "flex", width: "100%", height: 44, marginTop: 12 }}>
           {BARS.map((w, i) => (
             <div
               key={i}
-              style={{ display: "flex", width: w * 3.5, background: i % 2 === 0 ? TICKET_INK : "transparent" }}
+              style={{ display: "flex", flexGrow: w, flexBasis: 0, background: i % 2 === 0 ? TICKET_INK : "transparent" }}
             />
           ))}
         </div>

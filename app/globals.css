@@ -34,7 +34,6 @@
   --ticket-line: var(--line);
   --ticket-band: var(--accent);
   --ticket-on-band: var(--on-accent);
-  --ticket-page: var(--paper);
   --card-bg: var(--paper);
   --card-text: var(--ink);
   --card-muted: var(--muted);

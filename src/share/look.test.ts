@@ -37,7 +37,6 @@ describe("card looks", () => {
       "--ticket-line": "#DDE0E8",
       "--ticket-band": "#E8432A",
       "--ticket-on-band": "#FFFFFF",
-      "--ticket-page": "#111318",
     });
   });
 });

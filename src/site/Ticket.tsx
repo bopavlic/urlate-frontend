@@ -9,8 +9,12 @@ export function ticketNumber(minutes: number): string {
   return `No. ${String(Math.min(minutes, 999999)).padStart(6, "0")}`;
 }
 
-// A fixed pattern, so the barcode is the same on every render.
-const BARS = [3, 1, 4, 1, 2, 3, 1, 2, 1, 5, 2, 1, 3, 1, 2, 2, 4, 1, 2, 3, 1, 3, 1, 2, 4, 1, 2];
+// Bars and gaps alternate, starting with a bar; each digit is a width. The same pattern as
+// the app's ticket, stretched to the full width.
+export const BARS = Array.from(
+  "2112131121312211311212131123112113122131112131212311211312131121231121",
+  Number,
+);
 
 const BAND: Record<TicketTone, { bg: string; fg: string }> = {
   owed: { bg: "var(--ticket-band)", fg: "var(--ticket-on-band)" },
@@ -70,20 +74,11 @@ export function Ticket({
           <dt style={{ color: "var(--ticket-muted)" }}>KEPT WAITING</dt>
           <dd className="truncate text-right font-bold">{waiter}</dd>
         </dl>
-        <div className={`relative ${sm ? "my-3" : "my-4"}`}>
-          <div className="border-t-2 border-dashed" style={{ borderColor: "var(--ticket-line)" }} />
-          {/* The notches: cut into each edge in the colour behind the ticket. */}
-          <span
-            aria-hidden
-            className={`absolute top-1/2 -translate-y-1/2 rounded-full ${sm ? "-left-6 h-4 w-4" : "-left-9 h-6 w-6"}`}
-            style={{ background: "var(--ticket-page)" }}
-          />
-          <span
-            aria-hidden
-            className={`absolute top-1/2 -translate-y-1/2 rounded-full ${sm ? "-right-6 h-4 w-4" : "-right-9 h-6 w-6"}`}
-            style={{ background: "var(--ticket-page)" }}
-          />
-        </div>
+        {/* The tear-off line. */}
+        <div
+          className={`border-t-2 border-dashed ${sm ? "my-3" : "my-4"}`}
+          style={{ borderColor: "var(--ticket-line)" }}
+        />
         <p className="flex items-baseline gap-2 font-display leading-none">
           <span
             className={`tabular-nums tracking-[-0.04em] ${sm ? "text-5xl" : "text-[clamp(4.5rem,14vw,6.5rem)]"}`}
@@ -93,12 +88,13 @@ export function Ticket({
           </span>
           <span className={sm ? "text-base" : "text-2xl"}>MIN</span>
         </p>
-        <div aria-hidden className={`flex gap-[2px] opacity-85 ${sm ? "mt-3 h-5" : "mt-4 h-8"}`}>
-          {BARS.map((width, i) => (
+        <div aria-hidden className={`flex ${sm ? "mt-3 h-6" : "mt-4 h-9"}`}>
+          {BARS.map((weight, i) => (
             <span
               key={i}
               style={{
-                width: width * (sm ? 1.5 : 2.5),
+                flexGrow: weight,
+                flexBasis: 0,
                 background: i % 2 === 0 ? "var(--ticket-ink)" : "transparent",
               }}
             />
