@@ -7,7 +7,8 @@
  */
 import type {
   CreateShareCardBody,
-  ShareCard
+  ShareCard,
+  ShareCardList
 } from '../../model';
 
 import { customInstance } from '../../../client';
@@ -18,7 +19,7 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
   /**
- * @summary Snapshot the score as a public card at urlate.app/s/{id} (same card if unchanged)
+ * @summary Snapshot who owes what as a public card at urlate.app/s/{id} (same card if unchanged)
  */
 export const createShareCard = (
     id: string,
@@ -28,6 +29,17 @@ export const createShareCard = (
       {url: `/ledgers/${id}/share-cards`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: createShareCardBody
+    },
+      options);
+    }
+  /**
+ * @summary Every card shared from this ledger, newest first (anyone in it can take one down)
+ */
+export const listShareCards = (
+    id: string,
+ options?: SecondParameter<typeof customInstance<ShareCardList>>,) => {
+      return customInstance<ShareCardList>(
+      {url: `/ledgers/${id}/share-cards`, method: 'GET'
     },
       options);
     }
@@ -42,5 +54,18 @@ export const getShareCard = (
     },
       options);
     }
+  /**
+ * @summary Take a card down: its link stops working (anyone in the ledger can, since it shows them)
+ */
+export const deleteShareCard = (
+    id: string,
+ options?: SecondParameter<typeof customInstance<void>>,) => {
+      return customInstance<void>(
+      {url: `/share-cards/${id}`, method: 'DELETE'
+    },
+      options);
+    }
   export type CreateShareCardResult = NonNullable<Awaited<ReturnType<typeof createShareCard>>>
+export type ListShareCardsResult = NonNullable<Awaited<ReturnType<typeof listShareCards>>>
 export type GetShareCardResult = NonNullable<Awaited<ReturnType<typeof getShareCard>>>
+export type DeleteShareCardResult = NonNullable<Awaited<ReturnType<typeof deleteShareCard>>>

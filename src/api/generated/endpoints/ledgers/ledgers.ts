@@ -13,6 +13,7 @@ import type {
   LedgerDetail,
   LedgerPage,
   ListLedgersParams,
+  RenameMemberBody,
   UpdateLedgerBody
 } from '../../model';
 
@@ -112,6 +113,32 @@ export const removeMember = (
     },
       options);
     }
+  /**
+ * @summary Rename someone who is not on the app yet (any member can)
+ */
+export const renameMember = (
+    id: string,
+    memberId: string,
+    renameMemberBody?: BodyType<RenameMemberBody>,
+ options?: SecondParameter<typeof customInstance<LedgerDetail>>,) => {
+      return customInstance<LedgerDetail>(
+      {url: `/ledgers/${id}/members/${memberId}`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json', },
+      data: renameMemberBody
+    },
+      options);
+    }
+  /**
+ * @summary Leave a ledger: I become a placeholder under my name, so the others keep the history (deleted if nobody else has an account)
+ */
+export const leaveLedger = (
+    id: string,
+ options?: SecondParameter<typeof customInstance<void>>,) => {
+      return customInstance<void>(
+      {url: `/ledgers/${id}/leave`, method: 'POST'
+    },
+      options);
+    }
   export type CreateLedgerResult = NonNullable<Awaited<ReturnType<typeof createLedger>>>
 export type ListLedgersResult = NonNullable<Awaited<ReturnType<typeof listLedgers>>>
 export type GetLedgerResult = NonNullable<Awaited<ReturnType<typeof getLedger>>>
@@ -119,3 +146,5 @@ export type UpdateLedgerResult = NonNullable<Awaited<ReturnType<typeof updateLed
 export type GetLedgerHistoryResult = NonNullable<Awaited<ReturnType<typeof getLedgerHistory>>>
 export type AddMemberResult = NonNullable<Awaited<ReturnType<typeof addMember>>>
 export type RemoveMemberResult = NonNullable<Awaited<ReturnType<typeof removeMember>>>
+export type RenameMemberResult = NonNullable<Awaited<ReturnType<typeof renameMember>>>
+export type LeaveLedgerResult = NonNullable<Awaited<ReturnType<typeof leaveLedger>>>

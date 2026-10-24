@@ -9,7 +9,9 @@ import type {
   AvatarUpload,
   CreateAvatarUploadBody,
   DataExport,
+  GetMyStatsParams,
   Me,
+  Stats,
   UpdateMeBody
 } from '../../model';
 
@@ -79,8 +81,21 @@ export const exportMyData = (
     },
       options);
     }
+  /**
+ * @summary My lateness across every ledger: totals for everyone, the rest with Premium
+ */
+export const getMyStats = (
+    params?: GetMyStatsParams,
+ options?: SecondParameter<typeof customInstance<Stats>>,) => {
+      return customInstance<Stats>(
+      {url: `/me/stats`, method: 'GET',
+        params
+    },
+      options);
+    }
   export type GetMeResult = NonNullable<Awaited<ReturnType<typeof getMe>>>
 export type UpdateMeResult = NonNullable<Awaited<ReturnType<typeof updateMe>>>
 export type DeleteMeResult = NonNullable<Awaited<ReturnType<typeof deleteMe>>>
 export type CreateAvatarUploadResult = NonNullable<Awaited<ReturnType<typeof createAvatarUpload>>>
 export type ExportMyDataResult = NonNullable<Awaited<ReturnType<typeof exportMyData>>>
+export type GetMyStatsResult = NonNullable<Awaited<ReturnType<typeof getMyStats>>>
