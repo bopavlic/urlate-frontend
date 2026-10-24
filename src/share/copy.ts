@@ -10,29 +10,32 @@ export function normalizeShareCardId(input: string): string | null {
   return UUID.test(id) ? id : null;
 }
 
-/** The yellow card: whoever owes the time, and how much. Null when everyone is square. */
-export function cardScore(
+/** What the ticket on the card says: who was late, who waited, and how many minutes. Null when everyone is square. */
+export function cardTicket(
   card: ShareCard,
-): { label: string; minutes: number } | null {
+): { offender: string; waiter: string; minutes: number } | null {
   if (card.kind === "GROUP") {
     const worst = card.rows[0];
-    return worst ? { label: `${worst.name}’s tab`, minutes: worst.minutes } : null;
+    return worst
+      ? { offender: worst.name, waiter: card.groupName ?? "The group", minutes: worst.minutes }
+      : null;
   }
+  const other = card.otherName ?? "Them";
   switch (card.balance?.direction) {
     case "THEY_OWE_YOU":
-      return { label: `${card.otherName}’s tab`, minutes: card.balance.minutes };
+      return { offender: other, waiter: card.sharedByName, minutes: card.balance.minutes };
     case "YOU_OWE_THEM":
-      return { label: `${card.sharedByName}’s tab`, minutes: card.balance.minutes };
+      return { offender: card.sharedByName, waiter: other, minutes: card.balance.minutes };
     default:
       return null;
   }
 }
 
 export function shareDescription(card: Pick<ShareCard, "sharedByName">): string {
-  return `${card.sharedByName} keeps score on Ur Late: who kept whom waiting, in minutes.`;
+  return `${card.sharedByName} keeps track on Ur Late: who kept whom waiting, in minutes.`;
 }
 
-/** The day the score was shared; it may have moved since. */
+/** The day the card was shared; the minutes may have moved since. */
 export function sharedOn(card: Pick<ShareCard, "createdAt">): string {
   return new Intl.DateTimeFormat("en-GB", {
     day: "numeric",

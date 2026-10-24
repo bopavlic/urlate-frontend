@@ -80,17 +80,17 @@ describe("inviteCopy", () => {
       inviteCopy({
         ...pair,
         ledgerKind: "GROUP",
-        ledgerName: "Football",
+        ledgerName: "Friday lunch",
         placeholderName: null,
         balance: null,
       }),
     ).toEqual({
-      headline: "Borna invited you to Football.",
+      headline: "Borna invited you to Friday lunch.",
       detail: "Join the group and find out who’s always late.",
     });
   });
 
-  it("offers to start a tally from someone's profile code", () => {
+  it("offers to connect from someone's profile code", () => {
     expect(
       inviteCopy({
         ...pair,
@@ -100,8 +100,8 @@ describe("inviteCopy", () => {
         expiresAt: null,
       }),
     ).toEqual({
-      headline: "Borna wants to keep score with you.",
-      detail: "Start a tally: every minute either of you keeps the other waiting.",
+      headline: "Borna wants to add you on Ur Late.",
+      detail: "From now on, every minute either of you keeps the other waiting counts.",
     });
   });
 
@@ -110,12 +110,12 @@ describe("inviteCopy", () => {
       inviteCopy({
         ...pair,
         ledgerKind: "GROUP",
-        ledgerName: "Football",
+        ledgerName: "Friday lunch",
         placeholderName: "Ana",
         balance: { direction: "THEY_OWE_YOU", minutes: 7 },
       }),
     ).toEqual({
-      headline: "Borna invited you to Football.",
+      headline: "Borna invited you to Friday lunch.",
       detail: "You’re “Ana” there, and the group owes you 7 minutes.",
     });
   });

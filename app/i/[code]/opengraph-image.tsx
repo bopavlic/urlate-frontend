@@ -1,23 +1,14 @@
-import { readFile } from "node:fs/promises";
-import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { initials } from "@/src/invite/code";
 import { inviteCopy } from "@/src/invite/copy";
 import { loadInvite } from "@/src/invite/load";
+import { OG_CLASSIC, OgTicket, OgWordmark, ogFonts } from "@/src/site/og";
 
-// The card messengers show for an invite link: who invited you and the score.
+// The card messengers show for an invite link: who invited you and the balance.
 
 export const alt = "An invite to Ur Late";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-
-const INK = "#0B1F16";
-const ACCENT = "#FFCC1A";
-const PAPER = "#08140F";
-
-const display = readFile(
-  join(process.cwd(), "assets/fonts/BigShoulders_900Black.ttf"),
-);
 
 export default async function Image(props: {
   params: Promise<{ code: string }>;
@@ -29,6 +20,8 @@ export default async function Image(props: {
     ? inviteCopy(preview).headline
     : "Who’s been waiting on who?";
   const minutes = preview?.balance?.minutes ?? 0;
+  const owed = preview?.balance?.direction !== "YOU_OWE_THEM";
+  const look = OG_CLASSIC;
 
   return new ImageResponse(
     <div
@@ -36,108 +29,56 @@ export default async function Image(props: {
         width: "100%",
         height: "100%",
         display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
+        alignItems: "center",
+        gap: 56,
         padding: 72,
-        background: PAPER,
-        color: "#EEF3EF",
-        fontFamily: "Big Shoulders",
+        background: look.background,
+        color: look.text,
+        fontFamily: "Archivo Black",
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-        <div
-          style={{
-            display: "flex",
-            width: 44,
-            height: 60,
-            borderRadius: 6,
-            background: ACCENT,
-            transform: "rotate(6deg)",
-          }}
-        />
-        <div
-          style={{
-            display: "flex",
-            fontSize: 56,
-            textTransform: "uppercase",
-            letterSpacing: 2,
-          }}
-        >
-          Ur Late
-        </div>
-      </div>
-
-      <div style={{ display: "flex", alignItems: "flex-end", gap: 48 }}>
-        <div
-          style={{ display: "flex", flexDirection: "column", gap: 24, flex: 1 }}
-        >
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          flex: 1,
+          height: "100%",
+        }}
+      >
+        <OgWordmark look={look} />
+        <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
           {preview && (
             <div
               style={{
                 width: 96,
                 height: 96,
                 borderRadius: 48,
-                background: ACCENT,
-                color: INK,
+                background: "#FFFFFF",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontSize: 48,
+                fontSize: 40,
               }}
             >
               {initials(preview.inviterName)}
             </div>
           )}
-          <div
-            style={{
-              display: "flex",
-              fontSize: 88,
-              lineHeight: 0.95,
-              textTransform: "uppercase",
-            }}
-          >
+          <div style={{ display: "flex", fontSize: 60, lineHeight: 1.05, letterSpacing: -1 }}>
             {headline}
           </div>
         </div>
-        {minutes > 0 && (
-          <div
-            style={{
-              display: "flex",
-              alignItems: "baseline",
-              gap: 12,
-              padding: "24px 40px",
-              borderRadius: 20,
-              background: ACCENT,
-              color: INK,
-              transform: "rotate(-3deg)",
-            }}
-          >
-            <div style={{ display: "flex", fontSize: 160, lineHeight: 1 }}>
-              {minutes}
-            </div>
-            <div
-              style={{
-                display: "flex",
-                fontSize: 56,
-                textTransform: "uppercase",
-              }}
-            >
-              min
-            </div>
-          </div>
-        )}
       </div>
+      {preview && minutes > 0 && (
+        <OgTicket
+          minutes={minutes}
+          offender={(owed ? preview.inviterName : "You").toUpperCase()}
+          waiter={(owed ? "You" : preview.inviterName).toUpperCase()}
+          look={look}
+          width={400}
+        />
+      )}
     </div>,
-    {
-      ...size,
-      fonts: [
-        {
-          name: "Big Shoulders",
-          data: await display,
-          style: "normal",
-          weight: 900,
-        },
-      ],
-    },
+    { ...size, fonts: await ogFonts() },
   );
 }

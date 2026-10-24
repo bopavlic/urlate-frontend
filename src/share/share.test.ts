@@ -1,6 +1,6 @@
 import { AxiosError, AxiosHeaders } from "axios";
 import { describe, expect, it } from "vitest";
-import { cardScore, normalizeShareCardId, shareDescription, sharedOn, type ShareCard } from "./copy";
+import { cardTicket, normalizeShareCardId, shareDescription, sharedOn, type ShareCard } from "./copy";
 import { shareProblem } from "./problem";
 
 const pair: ShareCard = {
@@ -13,17 +13,17 @@ const pair: ShareCard = {
   groupName: null,
   balance: { direction: "THEY_OWE_YOU", minutes: 18 },
   rows: [],
-  style: "PITCH",
-  cardColor: "YELLOW",
+  style: "CHALK",
+  cardColor: "RED",
   createdAt: "2026-10-24T09:30:00.000Z",
 };
 
 const group: ShareCard = {
   ...pair,
   kind: "GROUP",
-  headline: "Ana owes Football 20 minutes.",
+  headline: "Ana owes Friday lunch 20 minutes.",
   otherName: null,
-  groupName: "Football",
+  groupName: "Friday lunch",
   balance: null,
   rows: [
     { name: "Ana", minutes: 20 },
@@ -43,36 +43,36 @@ describe("normalizeShareCardId", () => {
   });
 });
 
-describe("cardScore", () => {
-  it("puts the pair's minutes on the tab of whoever owes them", () => {
-    expect(cardScore(pair)).toEqual({ label: "My brother’s tab", minutes: 18 });
+describe("cardTicket", () => {
+  it("issues the ticket to whoever owes the minutes", () => {
+    expect(cardTicket(pair)).toEqual({ offender: "My brother", waiter: "Borna", minutes: 18 });
     expect(
-      cardScore({ ...pair, balance: { direction: "YOU_OWE_THEM", minutes: 7 } }),
-    ).toEqual({ label: "Borna’s tab", minutes: 7 });
+      cardTicket({ ...pair, balance: { direction: "YOU_OWE_THEM", minutes: 7 } }),
+    ).toEqual({ offender: "Borna", waiter: "My brother", minutes: 7 });
   });
 
-  it("puts a group's worst offender on the card", () => {
-    expect(cardScore(group)).toEqual({ label: "Ana’s tab", minutes: 20 });
+  it("issues a group's ticket to its worst offender", () => {
+    expect(cardTicket(group)).toEqual({ offender: "Ana", waiter: "Friday lunch", minutes: 20 });
   });
 
-  it("has no card when everyone is square", () => {
+  it("has no ticket when everyone is square", () => {
     expect(
-      cardScore({ ...pair, balance: { direction: "ALL_SQUARE", minutes: 0 } }),
+      cardTicket({ ...pair, balance: { direction: "ALL_SQUARE", minutes: 0 } }),
     ).toBeNull();
-    expect(cardScore({ ...group, rows: [] })).toBeNull();
+    expect(cardTicket({ ...group, rows: [] })).toBeNull();
   });
 });
 
 describe("shareDescription", () => {
   it("says who shared it and what Ur Late is", () => {
     expect(shareDescription(pair)).toBe(
-      "Borna keeps score on Ur Late: who kept whom waiting, in minutes.",
+      "Borna keeps track on Ur Late: who kept whom waiting, in minutes.",
     );
   });
 });
 
 describe("sharedOn", () => {
-  it("dates the score, since it can change after sharing", () => {
+  it("dates the card, since the minutes can change after sharing", () => {
     expect(sharedOn(pair)).toBe("24 October 2026");
   });
 });

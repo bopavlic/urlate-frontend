@@ -17,7 +17,7 @@ export function SiteFooter() {
         <div className="flex flex-col gap-3">
           <Logo />
           <p className="max-w-xs text-muted">
-            Keeps score of who kept whom waiting. In minutes.
+            Keeps track of who kept whom waiting. In minutes.
           </p>
           <p className="text-muted">
             Questions?{" "}

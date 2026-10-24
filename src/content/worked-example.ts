@@ -1,5 +1,5 @@
-// The brief's story: driving a brother to football. He's late 20 minutes in total, you're
-// late 2, so he owes you 18. Shown on the home page and /how-it-works.
+// The brief's story: giving a brother a lift. He's late 20 minutes in total, you're late 2,
+// so he owes you 18. Shown on the home page and /how-it-works.
 
 export interface ExampleEntry {
   day: string;

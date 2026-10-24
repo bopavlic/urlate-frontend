@@ -1,15 +1,15 @@
 import Link from "next/link";
-import { Suspense } from "react";
+import { Suspense, type CSSProperties } from "react";
 import { exampleEntries, exampleTotals } from "@/src/content/worked-example";
 import {
   jsonLdHtml,
   organizationJsonLd,
   softwareApplicationJsonLd,
 } from "@/src/seo/structured-data";
-import { PitchMarkings } from "@/src/site/PitchMarkings";
+import { lookVars } from "@/src/share/look";
 import { StoreLinks, StoreLinksFallback } from "@/src/site/StoreLinks";
+import { Ticket } from "@/src/site/Ticket";
 import { siteUrl } from "@/src/site/url";
-import { YellowCard } from "@/src/site/YellowCard";
 
 export const metadata = { alternates: { canonical: "/" } };
 
@@ -21,8 +21,8 @@ const FEATURES = [
     body: "Pick the person, tap the minutes, save. It takes less than five seconds, so you can do it while you’re still waiting.",
   },
   {
-    title: "They see the score too",
-    body: "Start a tally with someone who isn’t on the app yet. Send them the link, and the whole history becomes theirs as well.",
+    title: "They see it too",
+    body: "Add someone who isn’t on the app yet. Send them the link, and the whole history becomes theirs as well.",
   },
   {
     title: "Forgive, or wipe the slate",
@@ -30,14 +30,33 @@ const FEATURES = [
   },
   {
     title: "Groups get a leaderboard",
-    body: "Football, the carpool, Friday lunch. See who keeps everyone waiting, ranked.",
+    body: "The carpool, Friday lunch, the book club. See who keeps everyone waiting, ranked.",
   },
 ];
 
+// Three of the share-card looks, as people post them.
 const SHARE_CARDS = [
-  { line: "My brother owes me", minutes: 18, tilt: "-rotate-6", tone: "accent" },
-  { line: "Ana has kept me waiting", minutes: 42, tilt: "rotate-2", tone: "ink" },
-  { line: "Ivo tops the late table at football", minutes: 63, tilt: "-rotate-1", tone: "accent" },
+  {
+    headline: "My brother owes me 18 minutes.",
+    offender: "MY BROTHER",
+    waiter: "ME",
+    minutes: 18,
+    look: { style: "CHALK", cardColor: "RED" },
+  },
+  {
+    headline: "Mom has kept me waiting 42 minutes.",
+    offender: "MOM",
+    waiter: "ME",
+    minutes: 42,
+    look: { style: "PITCH", cardColor: "PINK" },
+  },
+  {
+    headline: "John keeps Friday lunch waiting the most.",
+    offender: "JOHN",
+    waiter: "FRIDAY LUNCH",
+    minutes: 63,
+    look: { style: "DAYLIGHT", cardColor: "BLUE" },
+  },
 ] as const;
 
 export default function Home() {
@@ -53,45 +72,53 @@ export default function Home() {
         }}
       />
 
-      <section className="mx-auto grid w-full max-w-6xl items-center gap-12 px-4 pb-20 pt-8 sm:px-8 md:grid-cols-[1.15fr_1fr] md:pt-16">
-        <div className="flex flex-col gap-6">
-          <h1 className="font-display text-[clamp(3.75rem,11vw,7.5rem)] font-black uppercase leading-[0.86]">
+      <section className="mx-auto grid w-full max-w-6xl items-center gap-14 px-4 pb-20 pt-10 sm:px-8 md:grid-cols-[1.1fr_1fr] md:pt-20">
+        <div className="flex flex-col gap-7">
+          <h1 className="text-balance font-display text-[clamp(2.75rem,7vw,5rem)] leading-[1.02] tracking-[-0.02em]">
             Who’s been waiting on who?
           </h1>
-          <p className="max-w-[34ch] text-xl leading-relaxed text-muted">
-            Ur Late keeps a running score, in minutes, of who kept whom waiting.
-            Like splitting a bill, except the currency is time.
+          <p className="max-w-[36ch] text-xl leading-relaxed text-muted">
+            Being late gets you a ticket. Ur Late keeps track, in minutes, of who
+            kept whom waiting.
           </p>
           <Suspense fallback={<StoreLinksFallback />}>
             <StoreLinks />
           </Suspense>
         </div>
-        <div className="flex justify-center md:justify-end">
-          <YellowCard label="Your brother owes you" minutes={totals.owed} show />
+        <div className="flex flex-col items-center gap-6 md:items-end">
+          <Ticket
+            minutes={totals.owed}
+            offender="YOUR BROTHER"
+            waiter="YOU"
+            land
+            className="w-full max-w-[24rem]"
+          />
+          <p className="w-full max-w-[24rem] text-center">
+            <span className="block text-balance font-display text-2xl">
+              Your brother owes you {totals.owed} min
+            </span>
+            <span className="text-muted">Pay up in minutes, not money.</span>
+          </p>
         </div>
       </section>
 
-      <section
-        aria-labelledby="score-heading"
-        className="relative overflow-hidden bg-pitch text-chalk"
-      >
-        <PitchMarkings />
-        <div className="relative mx-auto grid w-full max-w-6xl grid-cols-[minmax(0,1fr)] gap-12 px-4 py-20 sm:px-8 md:grid-cols-2">
+      <section aria-labelledby="minutes-heading" className="bg-surface">
+        <div className="mx-auto grid w-full max-w-6xl grid-cols-[minmax(0,1fr)] gap-12 px-4 py-20 sm:px-8 md:grid-cols-2">
           <div className="flex flex-col gap-6">
             <h2
-              id="score-heading"
-              className="font-display text-5xl font-black uppercase leading-[0.9] sm:text-6xl"
+              id="minutes-heading"
+              className="text-balance font-display text-4xl leading-[1.05] tracking-[-0.02em] sm:text-5xl"
             >
               He was late 20 minutes. You were late 2.
             </h2>
-            <p className="max-w-[40ch] text-lg leading-relaxed text-chalk/75">
-              Every time someone’s late, it goes on the tally in whole minutes.
-              The score nets out, so there’s only ever one number: who owes whom,
+            <p className="max-w-[40ch] text-lg leading-relaxed text-muted">
+              Every time someone’s late, it gets logged in whole minutes. The
+              minutes net out, so there’s only ever one number: who owes whom,
               and how much.
             </p>
             <p
               aria-label={`${totals.brother} minus ${totals.you} equals ${totals.owed} minutes`}
-              className="font-display text-7xl font-black tabular-nums sm:text-8xl"
+              className="font-display text-6xl tracking-[-0.03em] tabular-nums sm:text-7xl"
             >
               {totals.brother} − {totals.you} ={" "}
               <span className="text-accent">{totals.owed}</span>
@@ -100,13 +127,13 @@ export default function Home() {
               href="/how-it-works"
               className="w-fit font-semibold text-accent underline underline-offset-4"
             >
-              How the score works
+              How it works
             </Link>
           </div>
 
           <table className="w-full self-start text-left">
-            <caption className="pb-3 text-left text-chalk/75">
-              Three weeks of football drop-offs
+            <caption className="pb-3 text-left text-muted">
+              Three weeks of lifts with your brother
             </caption>
             <thead className="sr-only">
               <tr>
@@ -117,13 +144,22 @@ export default function Home() {
             </thead>
             <tbody>
               {exampleEntries.map((entry) => (
-                <tr key={entry.day} className="border-t border-pitch-line">
-                  <td className="py-3 pr-3 text-chalk/75">{entry.day}</td>
+                <tr key={entry.day} className="border-t border-line">
+                  <td className="py-3 pr-3 text-muted">{entry.day}</td>
                   <td className="py-3 pr-3 font-semibold">
                     {entry.late === "brother" ? "Your brother" : "You"}
                   </td>
-                  <td className="w-12 py-3 text-right font-display text-3xl font-black tabular-nums">
-                    {entry.minutes}
+                  <td className="w-16 py-3 text-right">
+                    <span
+                      className={`inline-block min-w-10 rounded-md px-2 py-1 text-center font-mono text-sm font-bold ${
+                        entry.late === "brother"
+                          ? "bg-accent text-on-accent"
+                          : "bg-ink text-paper"
+                      }`}
+                    >
+                      {entry.late === "brother" ? "+" : "−"}
+                      {entry.minutes}
+                    </span>
                   </td>
                 </tr>
               ))}
@@ -134,62 +170,54 @@ export default function Home() {
 
       <section
         aria-label="What you can do"
-        className="mx-auto grid w-full max-w-6xl gap-x-16 gap-y-12 px-4 py-20 sm:grid-cols-2 sm:px-8"
+        className="mx-auto grid w-full max-w-6xl gap-x-16 gap-y-12 px-4 py-24 sm:grid-cols-2 sm:px-8"
       >
         {FEATURES.map((feature) => (
           <div key={feature.title} className="flex max-w-md flex-col gap-3">
-            <h2 className="font-display text-4xl font-black uppercase leading-none">
-              {feature.title}
-            </h2>
+            <h2 className="font-display text-2xl leading-tight">{feature.title}</h2>
             <p className="text-lg leading-relaxed text-muted">{feature.body}</p>
           </div>
         ))}
       </section>
 
-      <section
-        aria-labelledby="share-heading"
-        className="bg-surface"
-      >
+      <section aria-labelledby="share-heading" className="bg-surface">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-4 py-20 sm:px-8">
           <div className="flex max-w-xl flex-col gap-4">
             <h2
               id="share-heading"
-              className="font-display text-5xl font-black uppercase leading-[0.9] sm:text-6xl"
+              className="text-balance font-display text-4xl leading-[1.05] tracking-[-0.02em] sm:text-5xl"
             >
               Made for the group chat
             </h2>
             <p className="text-lg leading-relaxed text-muted">
-              Share the score as a card for Instagram Stories or WhatsApp. It’s
-              a running joke, so let everyone in on it.
+              Share who owes whom as a card for Instagram Stories or WhatsApp.
+              It’s a running joke, so let everyone in on it.
             </p>
           </div>
-          <ul className="flex flex-col items-center gap-8 md:flex-row md:justify-center md:gap-0">
+          <ul className="grid grid-cols-[minmax(0,18rem)] justify-center gap-6 md:grid-cols-3">
             {SHARE_CARDS.map((card) => (
               <li
-                key={card.line}
-                className={`flex aspect-[9/14] w-64 flex-col justify-between rounded-3xl p-6 shadow-[0_24px_48px_-20px_rgb(11_31_22/0.5)] md:-mx-3 ${card.tilt} ${
-                  card.tone === "accent"
-                    ? "bg-accent text-on-accent"
-                    : "bg-pitch text-chalk"
-                }`}
+                key={card.headline}
+                style={lookVars(card.look) as CSSProperties}
+                className="flex aspect-[9/16] flex-col justify-between rounded-[2rem] bg-card-bg p-6 text-card-text"
               >
-                <span className="font-display text-xl font-black uppercase">
+                <span className="flex items-center gap-2 font-display text-lg">
+                  <span
+                    aria-hidden
+                    className="h-3.5 w-5 -rotate-[8deg] rounded-[3px]"
+                    style={{ background: "var(--ticket-band)" }}
+                  />
                   Ur Late
                 </span>
-                <span className="flex flex-col gap-2">
-                  <span className="text-xl font-semibold leading-snug">
-                    {card.line}
-                  </span>
-                  <span className="flex items-baseline gap-2">
-                    <span className="font-display text-8xl font-black leading-[0.85] tabular-nums">
-                      {card.minutes}
-                    </span>
-                    <span className="font-display text-3xl font-extrabold uppercase">
-                      min
-                    </span>
-                  </span>
-                </span>
-                <span className="text-sm opacity-70">urlate.app</span>
+                <span className="font-display text-2xl leading-tight">{card.headline}</span>
+                <Ticket
+                  size="sm"
+                  minutes={card.minutes}
+                  offender={card.offender}
+                  waiter={card.waiter}
+                  tilt={-3}
+                />
+                <span className="text-sm text-card-muted">urlate.app</span>
               </li>
             ))}
           </ul>
@@ -197,7 +225,7 @@ export default function Home() {
       </section>
 
       <section className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-24 sm:px-8">
-        <h2 className="max-w-3xl font-display text-6xl font-black uppercase leading-[0.88] sm:text-7xl">
+        <h2 className="max-w-3xl text-balance font-display text-5xl leading-[1.02] tracking-[-0.02em] sm:text-6xl">
           No one’s late yet. Give it time.
         </h2>
         <Suspense fallback={<StoreLinksFallback />}>

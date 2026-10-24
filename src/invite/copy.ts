@@ -38,9 +38,9 @@ export function inviteCopy(preview: InvitePreview): {
     preview;
   if (preview.kind === "PERSON") {
     return {
-      headline: `${inviterName} wants to keep score with you.`,
+      headline: `${inviterName} wants to add you on Ur Late.`,
       detail:
-        "Start a tally: every minute either of you keeps the other waiting.",
+        "From now on, every minute either of you keeps the other waiting counts.",
     };
   }
   if (ledgerKind === "GROUP") {

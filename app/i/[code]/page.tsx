@@ -4,9 +4,11 @@ import { formatInviteCode, initials } from "@/src/invite/code";
 import { inviteCopy, inviteTitle, type InvitePreview } from "@/src/invite/copy";
 import { loadInvite } from "@/src/invite/load";
 import type { InviteProblem } from "@/src/invite/problem";
+import { LogoMark } from "@/src/site/Logo";
 import { StoreLinks } from "@/src/site/StoreLinks";
+import { Ticket } from "@/src/site/Ticket";
 
-// Invite landing: who invited you, the score, and how to get into the app. Rendered per
+// Invite landing: who invited you, the balance, and how to get into the app. Rendered per
 // request (the invite can be used or expire at any moment) and kept out of search.
 
 export async function generateMetadata(
@@ -34,19 +36,14 @@ export default function InvitePage(props: PageProps<"/i/[code]">) {
   return (
     <main className="mx-auto flex w-full max-w-md flex-1 flex-col gap-8 px-4 py-8">
       <header className="flex items-center gap-2">
-        <span
-          aria-hidden
-          className="h-7 w-5 rotate-6 rounded-[3px] bg-accent shadow-sm"
-        />
-        <span className="font-display text-2xl font-black uppercase tracking-wide">
-          Ur Late
-        </span>
+        <LogoMark />
+        <span className="font-display text-xl">Ur Late</span>
       </header>
       <Suspense fallback={<InviteSkeleton />}>
         <InviteContent params={props.params} />
       </Suspense>
       <footer className="mt-auto text-sm text-muted">
-        Ur Late keeps score of who kept whom waiting. In minutes.
+        Ur Late keeps track of who kept whom waiting. In minutes.
       </footer>
     </main>
   );
@@ -66,31 +63,29 @@ async function InviteContent({
 function Invite({ preview }: { preview: InvitePreview }) {
   const { headline, detail } = inviteCopy(preview);
   const minutes = preview.balance?.minutes ?? 0;
+  const direction = preview.balance?.direction === "YOU_OWE_THEM" ? "owe" : "owed";
   return (
     <>
       <section className="flex flex-col gap-5">
         <Avatar name={preview.inviterName} url={preview.inviterAvatarUrl} />
-        <h1 className="font-display text-5xl font-black leading-[0.95] uppercase">
+        <h1 className="text-balance font-display text-5xl leading-[1.02] tracking-[-0.02em]">
           {headline}
         </h1>
         <p className="text-lg text-muted">{detail}</p>
         {minutes > 0 && (
-          <div className="flex w-fit -rotate-2 items-baseline gap-2 rounded-xl bg-accent px-6 py-4 text-on-accent shadow-md">
-            <span className="font-display text-7xl font-black tabular-nums leading-none">
-              {minutes}
-            </span>
-            <span className="font-display text-2xl font-extrabold uppercase">
-              min
-            </span>
-          </div>
+          <Ticket
+            tone={direction === "owed" ? "owed" : "owing"}
+            minutes={minutes}
+            offender={(direction === "owed" ? preview.inviterName : "You").toUpperCase()}
+            waiter={(direction === "owed" ? "You" : preview.inviterName).toUpperCase()}
+            className="w-full"
+          />
         )}
       </section>
 
-      <section className="flex flex-col gap-3 rounded-2xl border border-line bg-surface p-5">
-        <p className="text-sm font-semibold uppercase tracking-wider text-muted">
-          Your invite code
-        </p>
-        <p className="font-display text-5xl font-black tracking-widest tabular-nums">
+      <section className="flex flex-col gap-3 rounded-3xl bg-surface p-6">
+        <p className="font-semibold text-muted">Your invite code</p>
+        <p className="text-balance font-display text-4xl tracking-wider tabular-nums">
           {formatInviteCode(preview.code)}
         </p>
         <p className="text-muted">
@@ -101,7 +96,7 @@ function Invite({ preview }: { preview: InvitePreview }) {
       <section className="flex flex-col gap-3">
         <a
           href={`urlate://i/${preview.code}`}
-          className="flex h-14 items-center justify-center rounded-full bg-ink text-lg font-semibold text-paper"
+          className="flex h-14 items-center justify-center rounded-full bg-accent text-lg font-semibold text-on-accent"
         >
           Open in Ur Late
         </a>
@@ -120,7 +115,7 @@ function Avatar({ name, url }: { name: string; url: string | null }) {
     );
   }
   return (
-    <span className="flex h-16 w-16 items-center justify-center rounded-full bg-accent font-display text-3xl font-black text-on-accent">
+    <span className="flex h-16 w-16 items-center justify-center rounded-full bg-surface font-display text-2xl text-ink">
       {initials(name)}
     </span>
   );
@@ -149,7 +144,7 @@ function Problem({ problem }: { problem: InviteProblem }) {
   const { headline, detail } = PROBLEMS[problem];
   return (
     <section className="flex flex-col gap-4">
-      <h1 className="font-display text-5xl font-black leading-[0.95] uppercase">
+      <h1 className="text-balance font-display text-5xl leading-[1.02] tracking-[-0.02em]">
         {headline}
       </h1>
       <p className="text-lg text-muted">{detail}</p>

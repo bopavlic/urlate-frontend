@@ -40,7 +40,7 @@ export default async function BlogPost(props: PageProps<"/blog/[slug]">) {
         >
           All posts
         </Link>
-        <h1 className="font-display text-[clamp(3rem,8vw,5rem)] font-black uppercase leading-[0.9]">
+        <h1 className="text-balance font-display text-[clamp(3rem,8vw,5rem)] leading-[1.02] tracking-[-0.02em]">
           {post.title}
         </h1>
         <time dateTime={post.date} className="text-muted">

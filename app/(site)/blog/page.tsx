@@ -13,7 +13,7 @@ export default function BlogIndex() {
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-4 pb-24 pt-8 sm:px-8 md:pt-16">
       <div className="flex max-w-2xl flex-col gap-5">
-        <h1 className="font-display text-[clamp(3.25rem,9vw,5.5rem)] font-black uppercase leading-[0.88]">
+        <h1 className="text-balance font-display text-[clamp(3rem,8vw,5.25rem)] leading-[1.02] tracking-[-0.02em]">
           On being late
         </h1>
         <p className="text-xl leading-relaxed text-muted">
@@ -24,7 +24,7 @@ export default function BlogIndex() {
         {posts.map((post) => (
           <li key={post.slug} className="border-t border-line py-7 last:border-b">
             <article className="flex flex-col gap-2">
-              <h2 className="font-display text-4xl font-black uppercase leading-[0.95]">
+              <h2 className="font-display text-4xl leading-tight tracking-[-0.02em]">
                 <Link
                   href={`/blog/${post.slug}`}
                   className="underline-offset-4 hover:underline"

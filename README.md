@@ -29,7 +29,7 @@ CI (`.github/workflows/ci.yml`) runs typecheck, lint, tests and a production bui
 
 | Route | What |
 | --- | --- |
-| `/` | Landing: hero, the worked example on the night pitch, features, share-card examples. Organization + SoftwareApplication JSON-LD |
+| `/` | Landing: hero, the worked example, features, share-card examples. Organization + SoftwareApplication JSON-LD |
 | `/how-it-works` | The score explained with the brief's worked example and the rules |
 | `/faq` | Questions from `src/content/faq.ts`, with FAQPage JSON-LD |
 | `/blog`, `/blog/[slug]` | Posts listed in `src/blog/posts.ts`, bodies in `content/blog/<slug>.mdx`, each with an OG image |
@@ -57,4 +57,4 @@ All are read on the server at request time (except where noted), so one Docker i
 
 The API rate-limits invite lookups per visitor IP. The site forwards the visitor's address (the rightmost `X-Forwarded-For` entry, set by Caddy) to the API, so in production Caddy must sit in front of the site.
 
-The OG image font (`assets/fonts/BigShoulders_900Black.ttf`) is Big Shoulders under the SIL Open Font License (`assets/fonts/OFL.txt`).
+The OG image fonts (`assets/fonts/ArchivoBlack_400Regular.ttf`, `SpaceMono_*.ttf`) are Archivo Black and Space Mono under the SIL Open Font License (`assets/fonts/OFL.txt`).

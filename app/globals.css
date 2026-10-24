@@ -1,34 +1,44 @@
 @import "tailwindcss";
 
-/* The Ur Late palette (same as urlate-mobile/src/theme/tokens.ts): a referee's yellow card
-   on a football pitch at night. */
+/* The Ur Late palette (same as urlate-mobile/src/theme/tokens.ts, classic theme): being
+   late gets you a ticket, like a parking fine. A tomato-red ticket on a cool grey page. */
 :root {
-  --paper: #ffffff;
-  --surface: #f2f5f2;
-  --ink: #0b1f16;
-  --muted: #5e6e66;
-  --line: #e1e7e2;
-  --accent: #ffcc1a;
-  --on-accent: #0b1f16;
-  --danger: #c62e2e;
+  --paper: #eef0f4;
+  --surface: #ffffff;
+  --ink: #16182b;
+  --muted: #5c6070;
+  --line: #dde0e8;
+  --accent: #d63a1f;
+  --on-accent: #ffffff;
+  --danger: #a61b1b;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --paper: #08140f;
-    --surface: #10211a;
-    --ink: #eef3ef;
-    --muted: #8fa39a;
-    --line: #1e3329;
-    --danger: #ff6b61;
+    --paper: #111318;
+    --surface: #1b1e26;
+    --ink: #f1f2f5;
+    --muted: #9a9ead;
+    --line: #2a2e39;
+    --accent: #ff6a4d;
+    --on-accent: #16182b;
+    --danger: #ff8a80;
   }
 }
 
-/* The night pitch behind the scoreboard: the same in both themes. */
+/* The ticket (src/site/Ticket.tsx) follows the theme; the /s page swaps in the card's look. */
 :root {
-  --pitch: #08140f;
-  --pitch-line: rgb(238 243 239 / 0.09);
-  --chalk: #eef3ef;
+  --ticket-paper: var(--surface);
+  --ticket-ink: var(--ink);
+  --ticket-muted: var(--muted);
+  --ticket-line: var(--line);
+  --ticket-band: var(--accent);
+  --ticket-on-band: var(--on-accent);
+  --ticket-page: var(--paper);
+  --card-bg: var(--paper);
+  --card-text: var(--ink);
+  --card-muted: var(--muted);
+  --card-line: var(--line);
 }
 
 @theme inline {
@@ -40,11 +50,13 @@
   --color-accent: var(--accent);
   --color-on-accent: var(--on-accent);
   --color-danger: var(--danger);
-  --color-pitch: var(--pitch);
-  --color-pitch-line: var(--pitch-line);
-  --color-chalk: var(--chalk);
-  --font-sans: var(--font-figtree);
-  --font-display: var(--font-big-shoulders);
+  --color-card-bg: var(--card-bg);
+  --color-card-text: var(--card-text);
+  --color-card-muted: var(--card-muted);
+  --color-card-line: var(--card-line);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-archivo-black);
+  --font-mono: var(--font-space-mono);
 }
 
 body {
@@ -67,15 +79,10 @@ body {
   }
 }
 
-/* The yellow card being pulled out and held up (YellowCard `show`). Works with the card's
-   own `rotate`, which Tailwind sets as a separate property. */
-@keyframes card-out {
+/* A fresh ticket sliding up and landing at its tilt (Ticket `land`): the one entrance on the site. */
+@keyframes ticket-land {
   from {
-    transform: translateY(48px) rotate(-16deg) scale(0.92);
+    transform: translateY(80px) rotate(-14deg);
     opacity: 0;
-  }
-  to {
-    transform: none;
-    opacity: 1;
   }
 }

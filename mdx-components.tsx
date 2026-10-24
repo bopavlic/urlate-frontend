@@ -5,13 +5,13 @@ import Link from "next/link";
 const components: MDXComponents = {
   h1: (props) => (
     <h1
-      className="font-display text-5xl font-black uppercase leading-[0.9] sm:text-6xl"
+      className="text-balance font-display text-5xl leading-[1.02] tracking-[-0.02em] sm:text-6xl"
       {...props}
     />
   ),
   h2: (props) => (
     <h2
-      className="mt-6 font-display text-3xl font-black uppercase leading-none"
+      className="mt-6 font-display text-3xl leading-tight tracking-[-0.02em]"
       {...props}
     />
   ),

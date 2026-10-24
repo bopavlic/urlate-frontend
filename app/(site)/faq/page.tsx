@@ -6,7 +6,7 @@ import { faqPageJsonLd, jsonLdHtml } from "@/src/seo/structured-data";
 export const metadata: Metadata = {
   title: "Questions, answered",
   description:
-    "How the score works, who can see it, what it costs and what happens when someone disagrees. Answers about Ur Late.",
+    "How it works, who can see what, what it costs and what happens when someone disagrees. Answers about Ur Late.",
   alternates: { canonical: "/faq" },
 };
 
@@ -17,7 +17,7 @@ export default function FaqPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLdHtml(faqPageJsonLd(faqs)) }}
       />
-      <h1 className="font-display text-[clamp(3.25rem,9vw,5.5rem)] font-black uppercase leading-[0.88]">
+      <h1 className="text-balance font-display text-[clamp(3rem,8vw,5.25rem)] leading-[1.02] tracking-[-0.02em]">
         Questions, answered
       </h1>
       <div className="flex max-w-3xl flex-col">
@@ -26,12 +26,14 @@ export default function FaqPage() {
             key={faq.question}
             className="group border-t border-line py-5 last:border-b"
           >
-            <summary className="flex cursor-pointer list-none items-start justify-between gap-6 text-xl font-bold [&::-webkit-details-marker]:hidden">
+            <summary className="flex cursor-pointer list-none items-start justify-between gap-6 font-display text-xl tracking-[-0.01em] [&::-webkit-details-marker]:hidden">
               {faq.question}
               <span
                 aria-hidden
-                className="mt-1 h-5 w-3.5 shrink-0 rounded-[2px] bg-line transition-colors group-open:rotate-6 group-open:bg-accent"
-              />
+                className="mt-1 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-surface text-muted transition-transform group-open:rotate-45 group-open:bg-accent group-open:text-on-accent"
+              >
+                +
+              </span>
             </summary>
             <p className="max-w-[65ch] pt-3 text-lg leading-relaxed text-muted">
               {faq.answer}

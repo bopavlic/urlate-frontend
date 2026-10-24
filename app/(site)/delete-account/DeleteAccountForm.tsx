@@ -18,11 +18,11 @@ export function DeleteAccountForm() {
   if (state.step === "done") {
     return (
       <div role="status" className="flex flex-col gap-3 rounded-2xl bg-surface p-6">
-        <p className="font-display text-4xl font-black uppercase leading-none">
+        <p className="text-balance font-display text-4xl leading-tight tracking-[-0.02em]">
           Your account is deleted.
         </p>
         <p className="text-muted">
-          Your profile and sign-in are gone, along with tallies only you could see. If
+          Your profile and sign-in are gone, along with everything only you could see. If
           you want to come back, you can sign up again any time.
         </p>
       </div>

@@ -26,7 +26,7 @@ export function softwareApplicationJsonLd(input: {
     name: "Ur Late",
     url: input.siteUrl,
     description:
-      "Keeps a running score, in minutes, of who kept whom waiting. Like splitting a bill, except the currency is time.",
+      "Keeps track, in minutes, of who kept whom waiting. Being late gets you a ticket.",
     operatingSystem: "iOS, Android",
     applicationCategory: "LifestyleApplication",
     offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },

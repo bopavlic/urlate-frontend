@@ -22,12 +22,12 @@ export const posts: readonly Post[] = [
     slug: "how-late-is-late",
     title: "How late is late? A fair rule for the grey zone",
     description:
-      "Is two minutes late? Is five? A simple rule for when the clock starts, so nobody argues about the score.",
+      "Is two minutes late? Is five? A simple rule for when the clock starts, so nobody argues about who owes whom.",
     date: "2026-10-23",
   },
   {
     slug: "keeping-score-without-keeping-grudges",
-    title: "Keeping score without keeping grudges",
+    title: "Keeping track without keeping grudges",
     description:
       "Tracking who’s late sounds petty. Done right, it does the opposite: it turns a sore point into a running joke.",
     date: "2026-10-23",
